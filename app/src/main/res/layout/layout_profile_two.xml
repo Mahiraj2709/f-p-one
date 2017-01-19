@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:text="@string/about_you"/>
+            <ImageView
+                android:id="@+id/iv_editAboutUs"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/ic_edit"
+                android:layout_width="36dp"
+                android:layout_height="36dp" />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/et_about_you"
+            android:background="@drawable/shape_rect_f_white_s_black"
+            android:layout_width="match_parent"
+            android:gravity="start"
+            android:enabled="false"
+            android:textColor="@android:color/black"
+            android:layout_height="120dp"
+            android:padding="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_selectServiceType"
+            android:background="@drawable/shape_rect_f_white_s_black"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:text="@string/select_service_type"/>
+        <LinearLayout
+            android:id="@+id/ll_serviceContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_rect_f_white_s_black"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/btn_save"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>

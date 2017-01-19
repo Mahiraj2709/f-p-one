@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "76503537373",
+    "firebase_url": "https://fairrepair-150306.firebaseio.com",
+    "project_id": "fairrepair-150306",
+    "storage_bucket": "fairrepair-150306.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76503537373:android:c37338b7ffe0480b",
+        "android_client_info": {
+          "package_name": "fairrepair.service.fairrepair"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76503537373-765o817en6cbt17b3lfgeuul2vrncmeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz5iirdXOVUJ2kQtrux3Q1HI5WHKnE0Sk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76503537373:android:683337406622a9d8",
+        "android_client_info": {
+          "package_name": "providers.fairrepair.service.fairrepairpartner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76503537373-765o817en6cbt17b3lfgeuul2vrncmeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz5iirdXOVUJ2kQtrux3Q1HI5WHKnE0Sk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">FairRepair Partner</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="dialog_action_ok">OK</string>
+    <string name="dialog_error_title">ERROR</string>
+    <string name="hint_email">Email ID</string>
+    <string name="submit">Submit</string>
+    <string name="alreadyhaevanaccount">Already have an account?</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">FORGOT PASSWORD</string>
+    <string name="hint_password">Password</string>
+    <string name="tv_forgot_password">Forgot Password?</string>
+    <string name="register_now">Register Now</string>
+    <string name="accept_t_and_s">By creating an account you agree to our</string>
+    <string name="terms_n_condition">Terms and Conditions.</string>
+    <string name="label_register_now">Register</string>
+    <string name="label_login">Login</string>
+    <string name="btn_register">REGISTER</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_phoneNo">Phone No</string>
+    <string name="hint_confirmPasswd">Confirm Password</string>
+    <string name="label_home">FAIR REPAIR</string>
+    <string name="tv_send_request">SEND REQUEST</string>
+    <string name="msg_server_error">There is a problem with our system. We apologize for the inconvenience caused. Please try again later. If the problem persist, please contact at support@domain.com.</string>
+    <string name="title_permissions">Permissions</string>
+    <string name="permission_not_accepted_access_location">Sorry, you can\'t use app without accepting location permission!</string>
+    <string name="title_my_profile">MY PROFILE</string>
+    <string name="title_service_history">SERVICE HISTORY</string>
+    <string name="title_reset_password">RESET PASSWORD</string>
+    <string name="title_support">SUPPORT</string>
+    <string name="title_logout">LOGOUT</string>
+    <string name="btn_confirm">RESET</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, usu ex regione legendos. Eos illum interpretaris ut, cu maiorum omittantur mei. Has ei timeam volumus accumsan. Sed agam erant tamquam ex, cum ad illum essent, est noster posidonium ei. Nam no modus putant, quas quodsi erroribus te quo. Ea maiorum noluisse reformidans est, detracto lobortis cu pri, quis quidam ut vix.
+
+Cibo nemore vim ex, est ipsum officiis ex. Pro augue homero diceret id. Nec eu vidisse recusabo, vim cu graece sensibus, in numquam maiorum oportere est. Et nibh posse eam. Enim voluptatum nec ex.
+
+An sit quem tempor, quot aliquando inciderint ius cu, vix ei tempor aliquam platonem. Sea dicam omittam omittantur ut. Nam et cibo dicant habemus. Sea eu iriure laboramus conceptam.
+
+Vel no fugit denique, in pri wisi prompta impedit, ad quidam interesset persequeris est. Ne elit denique definitionem vix. Sanctus verterem nec et, eum at summo nullam semper, pro graecis adipisci an. Sea ei diceret intellegam, salutandi conclusionemque an pri, in per saperet dissentiunt.
+
+Ei sea natum praesent. Nec cu accusam tractatos, ex brute quaestio postulant qui. Paulo conceptam appellantur ei vis. Sea falli evertitur at, eum te doming civibus urbanitas. Est et wisi graeci equidem, ad est porro utamur euripidis. Est no convenire iudicabit, eu ius percipit qualisque necessitatibus.</string>
+    <string name="dialog_no">NO</string>
+    <string name="dialog_yes">YES</string>
+    <string name="logout_confirm">Are you sure to logout?</string>
+    <string name="logout">Logout</string>
+    <string name="truck_model">Truck model/year</string>
+    <string name="engine_manufacturer">Engine manufacturer</string>
+    <string name="vin">VIN#</string>
+    <string name="service_desc">Service Description</string>
+    <string name="service_time">When you want to be serviced?</string>
+    <string name="with_trailer">You with trailer?</string>
+    <string name="select_service_type">Select Service Type</string>
+    <string name="btn_next">NEXT</string>
+    <string name="about_you">About You</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_hourly_charge">Your Hourly Service Charges</string>
+    <string name="title_about">ABOUT</string>
+    <string name="btn_save">SAVE</string>
+    <string name="title_attention">Attention!</string>
+    <string name="message_email_empty">Email cannot be empty.</string>
+    <string name="message_email_not_valid">Please enter valid email address.</string>
+    <string name="msg_invalid_name">Please enter valid name.</string>
+    <string name="msg_invalid_phone_no">Please enter valid phone number.</string>
+    <string name="valid_msg_invalid_address">Please enter valid address.</string>
+    <string name="valid_msg_hourly_charges">Please enter hourly charges.</string>
+    <string name="valid_msg_empty_password">Please enter password.</string>
+    <string name="msg_password_lenght">Password length should be greater than 6.</string>
+    <string name="msg_empty_confirm_password">Please re-enter password.</string>
+    <string name="password_not_match">Password did not match.</string>
+    <string name="msg_empty_about">Please describe yourself.</string>
+    <string name="msg_accept_tnc">Please accept terms and conditions.</string>
+    <string name="msg_select_service">You have not selected any service.</string>
+    <string name="no_connectin">No internet connection.</string>
+    <string name="msg_loading">please wait.....</string>
+    <string name="permission_not_accepted_read_phone_state" >Sorry, you can\'t use app without accepting phone state permission!</string>
+    <string name="text_availability">Availability</string>
+    <string name="title_accept">ACCEPT</string>
+    <string name="title_reject">REJECT</string>
+    <string name="hint_mech_offer_price">Enter Your Offer Price</string>
+    <string name="title_password_changed">Password Changed</string>
+    <string name="msg_invalid_phone_no_length">Please enter phone no. with length 10!</string>
+    <string name="title_home">HOME</string>
+    <string name="title_service_history_detail">SERVICE HISTORY DETAIL</string>
+    <string name="title_login">LOGIN</string>
+    <string name="title_register">REGISTER</string>
+    <string name="title_forgot_password">FORGOT PASSWORD</string>
+    <string name="hint_new_password">New Password</string>
+    <string name="status">Status</string>
+    <string name="valid_msg_hourly_charges_less_than_zero">Hourly charges can\'t be zero.</string>
+    <string name="title_success">Success</string>
+    <string name="customer_location">Location</string>
+    <string name="msg_invalid_offer_price">Please fill your offer price.</string>
+    <string name="msg_offer_price_zero">Please enter correct offer price.</string>
+    <string name="title_new_customer">New Request</string>
+    <string name="show_customer">Show</string>
+    <string name="message_new_request">You have one new request.</string>
+    <string name="btn_i_have_arrived">I have arrived</string>
+    <string name="hint_service_name">Enter Service</string>
+    <string name="text_service_charge">Service Charge 10%</string>
+    <string name="btn_submit">Submit</string>
+    <string name="btn_done">Done</string>
+    <string name="text_new_request">You have one new request.</string>
+    <string name="btn_view_details">View Details</string>
+    <string name="title_my_home">HOME</string>
+    <string name="title_i_have_arrived">I HAVE ARRIVED</string>
+    <string name="request_id">Request ID</string>
+    <string name="btn_cancel_reqeust">CANCEL REQUEST</string>
+    <string name="btn_finish">finish</string>
+</resources>
