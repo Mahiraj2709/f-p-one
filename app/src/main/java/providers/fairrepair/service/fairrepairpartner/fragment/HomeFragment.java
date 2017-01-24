@@ -84,12 +84,10 @@ public class HomeFragment extends Fragment implements AvailabilityCallback{
         String notificationData = getActivity().getIntent().getStringExtra(ApplicationMetadata.NOTIFICATION_DATA);
         int notificationType = getActivity().getIntent().getIntExtra(ApplicationMetadata.NOTIFICATION_TYPE,-1);
         if (notificationData != null && notificationType == 1) { // NEW OFFER FROM CUSTOMER
-            customer = new Gson().fromJson(notificationData, Customer.class);
-            CustomerDetailFragment customerDetailFragment = CustomerDetailFragment.newInstance(customer);
-            customerDetailFragment.show(getActivity().getSupportFragmentManager(), "customer_detail");
+
         } else if(notificationData != null && notificationType == ApplicationMetadata.NOTIFICATION_OFFER_ACCEPTED){// OFFER ACCEPTED BY CUSTOMER
 
-            Fragment fragment = MechOnWayFragment.newInstance(notificationData);
+            Fragment fragment = MechOnWayFragment.newInstance(new Bundle());
             ((MainActivity)context).addFragmentToStack(fragment,"mech_on_way");
         }
         //set availability listener
@@ -197,6 +195,7 @@ public class HomeFragment extends Fragment implements AvailabilityCallback{
     public void onResume() {
         super.onResume();
     }
+
 
 
 }

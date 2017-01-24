@@ -42,6 +42,8 @@ public class DataManager {
     private PrefsHelper prefsHelper;
     private Context mContext;
     private RequestCallback mCallback = null;
+    private LocationUpdateListener mLocationUpdateListener = null;
+    private ArrivedCallback mArricedCallback = null;
     public DataManager(Context context) {
         mContext = context;
         mApiService = FairRepairService.Factory.makeFairRepairService(context);
@@ -53,6 +55,22 @@ public class DataManager {
     }
     public void setCallback(RequestCallback mCallback){
         this.mCallback = mCallback;
+    }
+
+    public interface LocationUpdateListener{
+        void locationUpdated();
+    }
+
+    public void setLocationUpdateListener(LocationUpdateListener locationUpdateListener) {
+        this.mLocationUpdateListener = locationUpdateListener;
+    }
+
+    public interface ArrivedCallback{
+        void arrived();
+    }
+
+    public void setmArricedCallback(ArrivedCallback mArricedCallback) {
+        this.mArricedCallback = mArricedCallback;
     }
 
     public void signUp(Map<String, RequestBody> requestMap) {
@@ -136,6 +154,7 @@ public class DataManager {
                     String sessionToken = response.body().getResponseData().getSessTok();
                     prefsHelper.savePref(ApplicationMetadata.SESSION_TOKEN, sessionToken);
                     UserInfo userInfo = response.body().getResponseData().getUserInfo();
+                    prefsHelper.savePref(ApplicationMetadata.USER_ID, userInfo.getId());
                     prefsHelper.savePref(ApplicationMetadata.USER_NAME, userInfo.getName());
                     prefsHelper.savePref(ApplicationMetadata.USER_EMAIL, userInfo.getEmail());
                     prefsHelper.savePref(ApplicationMetadata.USER_MOBILE, userInfo.getPhoneNo());
@@ -553,8 +572,8 @@ public class DataManager {
                 }
                 int status = response.body().getResponseStatus();
                 if (status == ApplicationMetadata.SUCCESS_RESPONSE_STATUS) {
-                    DialogFactory.createSimpleOkSuccessDialog(mContext,R.string.status, response.body().getResponseMsg()).show();
                     mCallback.Data(ApplicationMetadata.SUCCESS_RESPONSE_STATUS);
+                    DialogFactory.createSimpleOkSuccessDialog(mContext,R.string.status, response.body().getResponseMsg()).show();
                 } else {
                     DialogFactory.createSimpleOkErrorDialog(mContext, response.body().getResponseMsg()).show();
                     mCallback.Data(ApplicationMetadata.FAILURE_RESPONSE_STATUS);
@@ -666,6 +685,72 @@ public class DataManager {
                 int status = response.body().getResponseStatus();
                 if (status == ApplicationMetadata.SUCCESS_RESPONSE_STATUS) {
                     DialogFactory.createSimpleOkSuccessDialog(mContext,R.string.status, response.body().getResponseMsg()).show();
+                    //mCallback.Data(new Object());
+                } else {
+                    DialogFactory.createSimpleOkErrorDialog(mContext, response.body().getResponseMsg()).show();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<SignInResponse> call, Throwable t) {
+                // Log error here since request failed
+                progressDialog.dismiss();
+                Log.e(TAG, t.toString());
+                DialogFactory.createSimpleOkErrorDialog(mContext, R.string.title_attention, R.string.msg_server_error).show();
+            }
+        });
+    }
+
+    //Complete request
+    public void updateLatLng(final Map<String, String> requestMap) {
+        if (!NetworkUtil.isNetworkConnected(mContext)) {
+            DialogFactory.createSimpleOkErrorDialog(mContext, R.string.title_attention, R.string.no_connectin).show();
+            return;
+        }
+
+        Call<SignInResponse> call = mApiService.updateLatLng(requestMap);
+        call.enqueue(new Callback<SignInResponse>() {
+            @Override
+            public void onResponse(Call<SignInResponse> call, Response<SignInResponse> response) {
+                int status = response.body().getResponseStatus();
+                if (status == ApplicationMetadata.SUCCESS_RESPONSE_STATUS) {
+                    mLocationUpdateListener.locationUpdated();
+                    //mCallback.Data(new Object());
+                } else {
+                    DialogFactory.createSimpleOkErrorDialog(mContext, response.body().getResponseMsg()).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignInResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+                DialogFactory.createSimpleOkErrorDialog(mContext, R.string.title_attention, R.string.msg_server_error).show();
+            }
+        });
+    }
+
+    //Arrived
+    public void arrived(final Map<String, String> requestMap) {
+        if (!NetworkUtil.isNetworkConnected(mContext)) {
+            DialogFactory.createSimpleOkErrorDialog(mContext, R.string.title_attention, R.string.no_connectin).show();
+            return;
+        }
+        final ProgressDialog progressDialog = new ProgressDialog(mContext);
+        progressDialog.setMessage(mContext.getString(R.string.msg_loading));
+        progressDialog.show();
+        Call<SignInResponse> call = mApiService.arrived(requestMap);
+        call.enqueue(new Callback<SignInResponse>() {
+            @Override
+            public void onResponse(Call<SignInResponse> call, Response<SignInResponse> response) {
+                if (response.body() == null) {
+                    progressDialog.dismiss();
+                    return;
+                }
+                int status = response.body().getResponseStatus();
+                if (status == ApplicationMetadata.SUCCESS_RESPONSE_STATUS) {
+                    mArricedCallback.arrived();
                     //mCallback.Data(new Object());
                 } else {
                     DialogFactory.createSimpleOkErrorDialog(mContext, response.body().getResponseMsg()).show();

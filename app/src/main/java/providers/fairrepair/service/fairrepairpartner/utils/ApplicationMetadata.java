@@ -65,4 +65,8 @@ public interface ApplicationMetadata {
     String NOTIFICATION_TYPE = "notification_type";
     String BILLING_PRICE = "billing_price";
     String SERVICE_DETAIL = "service_detail";
+    String APP_PROVIDER_ID = "app_provider_id";
+    String CUSTOMER_ID = "customer_id";
+    String MESSAGE = "message";
+    String LOCATION = "location";
 }

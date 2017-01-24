@@ -1,5 +1,7 @@
 package providers.fairrepair.service.fairrepairpartner.fragment.mech_on_way;
 
+import android.os.Bundle;
+
 /**
  * Created by admin on 1/2/2017.
  */
@@ -7,7 +9,7 @@ package providers.fairrepair.service.fairrepairpartner.fragment.mech_on_way;
 public interface Presenter {
     void onMapReady();
 
-    void setOffer(String offer);
+    void setOffer(Bundle offer);
 
     void connectToGoogleApiClient();
     void onResume();

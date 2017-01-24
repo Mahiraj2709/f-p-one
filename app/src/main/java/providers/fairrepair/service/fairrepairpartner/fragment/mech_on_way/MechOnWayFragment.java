@@ -57,10 +57,10 @@ public class MechOnWayFragment extends Fragment implements OnMapReadyCallback, M
     @BindView(R.id.btn_finish) TextView btn_finish;
     @BindView(R.id.rl_informationContainer) RelativeLayout rl_informationContainer;
 
-    public static MechOnWayFragment newInstance(String args) {
+    public static MechOnWayFragment newInstance(Bundle args) {
         MechOnWayFragment fragment = new MechOnWayFragment();
         Bundle data = new Bundle();
-        data.putString("args", args);
+        data.putBundle("args", args);
         fragment.setArguments(data);
         return fragment;
     }
@@ -79,7 +79,8 @@ public class MechOnWayFragment extends Fragment implements OnMapReadyCallback, M
         ButterKnife.bind(this, view);
         FairRepairApplication.getBus().register(this);
         presenter = new PresenterImp(this, getActivity(), getContext());
-        presenter.setOffer(getArguments().getString("args"));
+        Bundle bundle = getArguments().getBundle("args");
+        presenter.setOffer(bundle);
         return view;
     }
 
@@ -103,7 +104,7 @@ public class MechOnWayFragment extends Fragment implements OnMapReadyCallback, M
 
     @Override
     public void setView(OfferAccepted offer) {
-        tv_address.setText("new york");
+        tv_address.setText(offer.location);
         tv_requestId.setText(getString(R.string.request_id) + "-" + offer.request_id);
         tv_phoneNo.setText(offer.phone_no);
 
@@ -120,7 +121,7 @@ public class MechOnWayFragment extends Fragment implements OnMapReadyCallback, M
         if (map != null) {
             map.clear();
 
-            map.addMarker(new MarkerOptions().position(customerLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_icon_indicator_red)));
+            map.addMarker(new MarkerOptions().position(customerLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin)));
             /*map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {

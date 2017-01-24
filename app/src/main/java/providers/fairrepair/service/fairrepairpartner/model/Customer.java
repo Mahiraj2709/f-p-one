@@ -23,8 +23,12 @@ public class Customer implements Serializable {
     public String model;
     public String longitude;
     public String profile_pic;
-    public String messag;
+    public String message;
     public String location;
     public String service_time;
     public String engine_manufacturer;
+
+    //Customer accept request
+    public String request_status;
+    public String phone_no;
 }

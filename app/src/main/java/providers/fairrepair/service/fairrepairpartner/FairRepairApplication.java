@@ -18,7 +18,7 @@ public class FairRepairApplication extends Application {
     public static int timeToAcceptRequest = -1;
     public static Bus getBus() {
         if (bus == null) {
-            bus = new Bus(ThreadEnforcer.MAIN);
+            bus = new Bus(ThreadEnforcer.ANY);
         }
         return bus;
     }

@@ -168,12 +168,13 @@ public class CustomerDetailFragment extends DialogFragment {
         dataManager.setCallback(new DataManager.RequestCallback() {
             @Override
             public void Data(Object data) {
-
                 if ((int) data == ApplicationMetadata.SUCCESS_RESPONSE_STATUS) {
                     //dismiss d
                     CustomerDetailFragment.this.dismiss();
+                    timer.cancel();
                 } else if ((int) data == ApplicationMetadata.FAILURE_RESPONSE_STATUS) {
                     CustomerDetailFragment.this.dismiss();
+                    timer.cancel();
 
                 }
                 if (requestCallback != null) {

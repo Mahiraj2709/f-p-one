@@ -1,13 +1,10 @@
 package providers.fairrepair.service.fairrepairpartner.fragment.mech_on_way;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -24,12 +21,17 @@ import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import providers.fairrepair.service.fairrepairpartner.app.MainActivity;
 import providers.fairrepair.service.fairrepairpartner.data.DataManager;
 import providers.fairrepair.service.fairrepairpartner.data.local.PrefsHelper;
 import providers.fairrepair.service.fairrepairpartner.fragment.BillingFragment;
 import providers.fairrepair.service.fairrepairpartner.model.OfferAccepted;
+import providers.fairrepair.service.fairrepairpartner.utils.ApplicationMetadata;
 
 /**
  * Created by admin on 1/2/2017.
@@ -50,6 +52,9 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
     private PrefsHelper prefsHelper = null;
     private DataManager dataManager = null;
     private OfferAccepted offerAccepted = null;
+    private Timer timer = new Timer();
+    private LatLng mLatLng = null;
+    private Map<String,String> requestMap = new HashMap<>();
 
     public PresenterImp(MechOnWayView view, FragmentActivity fragmentActivity, Context context) {
         if (view == null) throw new NullPointerException("view can not be NULL");
@@ -72,8 +77,18 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
     }
 
     @Override
-    public void setOffer(String offer) {
-        this.offerAccepted = new Gson().fromJson(offer, OfferAccepted.class);
+    public void setOffer(Bundle bundle) {
+        OfferAccepted offer = new OfferAccepted();
+
+        offer.profile_pic = bundle.getString(ApplicationMetadata.USER_IMAGE);
+        offer.latitude = bundle.getString(ApplicationMetadata.LATITUDE);
+        offer.longitude = bundle.getString(ApplicationMetadata.LONGITUDE);
+        offer.request_id = bundle.getString(ApplicationMetadata.REQUEST_ID);
+        offer.message = bundle.getString(ApplicationMetadata.MESSAGE);
+        offer.customer_id = bundle.getString(ApplicationMetadata.CUSTOMER_ID);
+        offer.phone_no = bundle.getString(ApplicationMetadata.USER_MOBILE);
+        offer.location = bundle.getString(ApplicationMetadata.LOCATION);
+        this.offerAccepted = offer;
         view.setView(this.offerAccepted);
     }
 
@@ -88,7 +103,9 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
         //move map to the current location
         //moveToLatLng();
         LatLng mechCurrentLoc = new LatLng(mLocation.getLatitude(),mLocation.getLongitude());
+        mLatLng = mechCurrentLoc;
         view.setMap(mechCurrentLoc,new LatLng(Double.parseDouble(offerAccepted.latitude), Double.parseDouble(offerAccepted.longitude)));
+        upldateLocation(prefsHelper.getPref(ApplicationMetadata.USER_ID,""));
     }
 
     @Override
@@ -169,7 +186,24 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
 
     @Override
     public void iHaveArrived() {
-        view.iHaveArrived();
+        requestMap.clear();
+        requestMap.put(ApplicationMetadata.REQUEST_ID,offerAccepted.request_id);
+        requestMap.put(ApplicationMetadata.APP_CUSTOMER_ID,offerAccepted.customer_id);
+        requestMap.put(ApplicationMetadata.SESSION_TOKEN,prefsHelper.getPref(ApplicationMetadata.SESSION_TOKEN, ""));
+        if (mLatLng == null) {
+            return;
+        }
+        requestMap.put(ApplicationMetadata.LATITUDE,mLatLng.latitude+"");
+        requestMap.put(ApplicationMetadata.LONGITUDE,mLatLng.longitude+"");
+        requestMap.put(ApplicationMetadata.LANGUAGE,"en");
+        dataManager.arrived(requestMap);
+        dataManager.setmArricedCallback(new DataManager.ArrivedCallback() {
+            @Override
+            public void arrived() {
+                view.iHaveArrived();
+            }
+        });
+
     }
 
     @Override
@@ -177,4 +211,34 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
         Fragment fragment = BillingFragment.newInstance(offerAccepted.request_id);
         ((MainActivity)activity).addFragmentToStack(fragment,"billing_fragment");
     }
+
+    private void upldateLocation(String appProviderId) {
+
+        requestMap.clear();
+        requestMap.put(ApplicationMetadata.APP_PROVIDER_ID,appProviderId);
+        requestMap.put(ApplicationMetadata.SESSION_TOKEN,prefsHelper.getPref(ApplicationMetadata.SESSION_TOKEN, ""));
+        if (mLatLng == null) {
+            return;
+        }
+
+        requestMap.put(ApplicationMetadata.LATITUDE,mLatLng.latitude+"");
+        requestMap.put(ApplicationMetadata.LONGITUDE,mLatLng.longitude+"");
+        requestMap.put(ApplicationMetadata.LANGUAGE,"en");
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                //call update location every 5 minutes
+                dataManager.updateLatLng(requestMap);
+                dataManager.setLocationUpdateListener(new DataManager.LocationUpdateListener() {
+                    @Override
+                    public void locationUpdated() {
+
+                    }
+                });
+
+            }
+        },0,2 * 60 * 1000);
+    }
+
 }

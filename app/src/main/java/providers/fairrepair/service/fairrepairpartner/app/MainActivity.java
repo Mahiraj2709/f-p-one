@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,9 +26,12 @@ import providers.fairrepair.service.fairrepairpartner.FairRepairApplication;
 import providers.fairrepair.service.fairrepairpartner.R;
 import providers.fairrepair.service.fairrepairpartner.data.DataManager;
 import providers.fairrepair.service.fairrepairpartner.data.local.PrefsHelper;
+import providers.fairrepair.service.fairrepairpartner.fragment.CustomerDetailFragment;
 import providers.fairrepair.service.fairrepairpartner.fragment.HomeFragment;
 import providers.fairrepair.service.fairrepairpartner.fragment.ResetPasswordFragment;
+import providers.fairrepair.service.fairrepairpartner.fragment.mech_on_way.MechOnWayFragment;
 import providers.fairrepair.service.fairrepairpartner.interfaces.AvailabilityCallback;
+import providers.fairrepair.service.fairrepairpartner.model.Customer;
 import providers.fairrepair.service.fairrepairpartner.utils.ApplicationMetadata;
 import providers.fairrepair.service.fairrepairpartner.utils.CommonMethods;
 import providers.fairrepair.service.fairrepairpartner.utils.DialogFactory;
@@ -48,6 +52,7 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FairRepairApplication.getBus().register(this);
         prefsHelper = new PrefsHelper(this);
         dataManager = new DataManager(this);
 
@@ -57,7 +62,7 @@ public class MainActivity extends BaseActivity
         tv_toolbarHeader.setText(getString(R.string.title_home));
 
         //if user click notifiction then hide nofitication
-        CommonMethods.cancelNotification(this,101);
+        CommonMethods.cancelNotification(this, 101);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -191,7 +196,7 @@ public class MainActivity extends BaseActivity
                     getSupportFragmentManager().popBackStack(getSupportFragmentManager().getBackStackEntryAt(i).getId(), getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
                 }
             }
-        }else if (id == R.id.nav_myProfile) {
+        } else if (id == R.id.nav_myProfile) {
             //DialogFactory.createComingSoonDialog(this);
             requestParams.clear();
             requestParams.put(ApplicationMetadata.SESSION_TOKEN, prefsHelper.getPref(ApplicationMetadata.SESSION_TOKEN, ""));
@@ -243,5 +248,28 @@ public class MainActivity extends BaseActivity
         this.availabilityCallback = listener;
     }
 
-
+    @Subscribe
+    public void receiveNotification(Customer customer) {
+        Log.i("firebase","inside subscirove");
+        int notificationType = Integer.parseInt(customer.notification_type);
+        if (notificationType == ApplicationMetadata.NOTIFICATION_NEW_OFFER) {
+            //new offer notification for the customer
+            CustomerDetailFragment customerDetailFragment = CustomerDetailFragment.newInstance(customer);
+            customerDetailFragment.show(getSupportFragmentManager(), "customer_detail");
+        } else if (notificationType == ApplicationMetadata.NOTIFICATION_OFFER_ACCEPTED) {
+            //request has been accepted
+            Log.i("firebase","inside accepted request");
+            Bundle bundle = new Bundle();
+            bundle.putString(ApplicationMetadata.LATITUDE,customer.latitude);
+            bundle.putString(ApplicationMetadata.LONGITUDE,customer.longitude);
+            bundle.putString(ApplicationMetadata.REQUEST_ID,customer.request_id);
+            bundle.putString(ApplicationMetadata.USER_IMAGE,customer.profile_pic);
+            bundle.putString(ApplicationMetadata.MESSAGE,customer.message);
+            bundle.putString(ApplicationMetadata.CUSTOMER_ID,customer.customer_id);
+            bundle.putString(ApplicationMetadata.USER_MOBILE,customer.phone_no);
+            bundle.putString(ApplicationMetadata.LOCATION,customer.location);
+            Fragment fragment = MechOnWayFragment.newInstance(bundle);
+            addFragmentToStack(fragment,"mech_on_way");
+        }
+    }
 }

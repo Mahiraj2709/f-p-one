@@ -14,4 +14,6 @@ public class OfferAccepted {
     public String longitude;
     public String profile_pic;
     public String message;
+    public String customer_id;
+    public String location;
 }
