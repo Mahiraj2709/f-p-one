@@ -33,6 +33,8 @@ import providers.fairrepair.service.fairrepairpartner.fragment.BillingFragment;
 import providers.fairrepair.service.fairrepairpartner.model.OfferAccepted;
 import providers.fairrepair.service.fairrepairpartner.utils.ApplicationMetadata;
 
+import static android.R.attr.fragment;
+
 /**
  * Created by admin on 1/2/2017.
  */
@@ -55,6 +57,7 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
     private Timer timer = new Timer();
     private LatLng mLatLng = null;
     private Map<String,String> requestMap = new HashMap<>();
+    private Bundle customerData = null;
 
     public PresenterImp(MechOnWayView view, FragmentActivity fragmentActivity, Context context) {
         if (view == null) throw new NullPointerException("view can not be NULL");
@@ -78,8 +81,8 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
 
     @Override
     public void setOffer(Bundle bundle) {
+        this.customerData = bundle;
         OfferAccepted offer = new OfferAccepted();
-
         offer.profile_pic = bundle.getString(ApplicationMetadata.USER_IMAGE);
         offer.latitude = bundle.getString(ApplicationMetadata.LATITUDE);
         offer.longitude = bundle.getString(ApplicationMetadata.LONGITUDE);
@@ -105,7 +108,7 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
         LatLng mechCurrentLoc = new LatLng(mLocation.getLatitude(),mLocation.getLongitude());
         mLatLng = mechCurrentLoc;
         view.setMap(mechCurrentLoc,new LatLng(Double.parseDouble(offerAccepted.latitude), Double.parseDouble(offerAccepted.longitude)));
-        upldateLocation(prefsHelper.getPref(ApplicationMetadata.USER_ID,""));
+        upldateLocation();
     }
 
     @Override
@@ -177,6 +180,7 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+        timer.cancel();
     }
 
     @Override
@@ -186,7 +190,7 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
 
     @Override
     public void iHaveArrived() {
-        requestMap.clear();
+        /*requestMap.clear();
         requestMap.put(ApplicationMetadata.REQUEST_ID,offerAccepted.request_id);
         requestMap.put(ApplicationMetadata.APP_CUSTOMER_ID,offerAccepted.customer_id);
         requestMap.put(ApplicationMetadata.SESSION_TOKEN,prefsHelper.getPref(ApplicationMetadata.SESSION_TOKEN, ""));
@@ -200,22 +204,42 @@ public class PresenterImp implements Presenter, LocationListener, GoogleApiClien
         dataManager.setmArricedCallback(new DataManager.ArrivedCallback() {
             @Override
             public void arrived() {
-                view.iHaveArrived();
             }
-        });
+        });*/
+        view.iHaveArrived();
 
     }
 
     @Override
     public void finishTask() {
-        Fragment fragment = BillingFragment.newInstance(offerAccepted.request_id);
-        ((MainActivity)activity).addFragmentToStack(fragment,"billing_fragment");
+        requestMap.clear();
+        requestMap.put(ApplicationMetadata.REQUEST_ID,offerAccepted.request_id);
+        requestMap.put(ApplicationMetadata.APP_CUSTOMER_ID,offerAccepted.customer_id);
+        requestMap.put(ApplicationMetadata.SESSION_TOKEN,prefsHelper.getPref(ApplicationMetadata.SESSION_TOKEN, ""));
+        if (mLatLng == null) {
+            return;
+        }
+        requestMap.put(ApplicationMetadata.LATITUDE,mLatLng.latitude+"");
+        requestMap.put(ApplicationMetadata.LONGITUDE,mLatLng.longitude+"");
+        requestMap.put(ApplicationMetadata.LANGUAGE,"en");
+        dataManager.arrived(requestMap);
+        dataManager.setmArricedCallback(new DataManager.ArrivedCallback() {
+            @Override
+            public void arrived(String serviceCharge) {
+                timer.cancel();
+                customerData.putString(ApplicationMetadata.SERVICE_CHARGE,serviceCharge);
+                Fragment fragment = BillingFragment.newInstance(customerData);
+                ((MainActivity)activity).addFragmentToStack(fragment,"billing_fragment");
+            }
+        });
+
+
     }
 
-    private void upldateLocation(String appProviderId) {
+    private void upldateLocation() {
 
         requestMap.clear();
-        requestMap.put(ApplicationMetadata.APP_PROVIDER_ID,appProviderId);
+        requestMap.put(ApplicationMetadata.CUSTOMER_ID,offerAccepted.customer_id);
         requestMap.put(ApplicationMetadata.SESSION_TOKEN,prefsHelper.getPref(ApplicationMetadata.SESSION_TOKEN, ""));
         if (mLatLng == null) {
             return;

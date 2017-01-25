@@ -66,7 +66,7 @@ public class DataManager {
     }
 
     public interface ArrivedCallback{
-        void arrived();
+        void arrived(String serviceCharge);
     }
 
     public void setmArricedCallback(ArrivedCallback mArricedCallback) {
@@ -647,8 +647,7 @@ public class DataManager {
                 }
                 int status = response.body().getResponseStatus();
                 if (status == ApplicationMetadata.SUCCESS_RESPONSE_STATUS) {
-                    DialogFactory.createSimpleOkSuccessDialog(mContext,R.string.status, response.body().getResponseMsg()).show();
-                    //mCallback.Data(new Object());
+                    mCallback.Data(response.body().getResponseData());
                 } else {
                     DialogFactory.createSimpleOkErrorDialog(mContext, response.body().getResponseMsg()).show();
                 }
@@ -684,8 +683,8 @@ public class DataManager {
                 }
                 int status = response.body().getResponseStatus();
                 if (status == ApplicationMetadata.SUCCESS_RESPONSE_STATUS) {
-                    DialogFactory.createSimpleOkSuccessDialog(mContext,R.string.status, response.body().getResponseMsg()).show();
-                    //mCallback.Data(new Object());
+                    mCallback.Data(new Object());
+                    DialogFactory.createSimpleOkErrorDialog(mContext, response.body().getResponseMsg()).show();
                 } else {
                     DialogFactory.createSimpleOkErrorDialog(mContext, response.body().getResponseMsg()).show();
                 }
@@ -750,7 +749,7 @@ public class DataManager {
                 }
                 int status = response.body().getResponseStatus();
                 if (status == ApplicationMetadata.SUCCESS_RESPONSE_STATUS) {
-                    mArricedCallback.arrived();
+                    mArricedCallback.arrived(response.body().getResponseData().getService_percentage());
                     //mCallback.Data(new Object());
                 } else {
                     DialogFactory.createSimpleOkErrorDialog(mContext, response.body().getResponseMsg()).show();

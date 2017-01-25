@@ -23,6 +23,22 @@ public class ResponseData {
 
     @SerializedName("services")
     private List<Service> serviceList;
+
+    //after customer finish the reqeust
+    @SerializedName("service_percentage")
+    private String service_percentage;
+
+    //for bill has been generated for the use
+    @SerializedName("billing_price")
+    private String billing_price;
+
+    //after customer finish the reqeust
+    @SerializedName("service_charge")
+    private String service_charge;
+
+    //after customer finish the reqeust
+    @SerializedName("total_price")
+    private String total_price;
     /**
      * 
      * @return
@@ -92,5 +108,37 @@ public class ResponseData {
 
     public void setServiceList(List<Service> serviceList) {
         this.serviceList = serviceList;
+    }
+
+    public String getService_percentage() {
+        return service_percentage;
+    }
+
+    public void setService_percentage(String service_percentage) {
+        this.service_percentage = service_percentage;
+    }
+
+    public String getBilling_price() {
+        return billing_price;
+    }
+
+    public void setBilling_price(String billing_price) {
+        this.billing_price = billing_price;
+    }
+
+    public String getService_charge() {
+        return service_charge;
+    }
+
+    public void setService_charge(String service_charge) {
+        this.service_charge = service_charge;
+    }
+
+    public String getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(String total_price) {
+        this.total_price = total_price;
     }
 }

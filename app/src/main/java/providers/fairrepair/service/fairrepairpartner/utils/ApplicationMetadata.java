@@ -69,4 +69,7 @@ public interface ApplicationMetadata {
     String CUSTOMER_ID = "customer_id";
     String MESSAGE = "message";
     String LOCATION = "location";
+    String SERVICE_CHARGE = "service_charge";
+    String TOTAL_PRICE = "total_price";
+    String SERVICE_CHARGE_PRICE = "service_charge_price";
 }
